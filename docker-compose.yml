@@ -1,0 +1,24 @@
+volumes:
+  postgres: # name of persistent data store mounted to docker container
+
+services:
+  # Download postgres image and mount in container to provide DBS to project
+  postgres:
+    image: postgres:14.13
+    #restart: always
+    container_name: ${DB_CONTAINER_NAME}
+    ports:
+      - ${POSTGRES_PORT}:${POSTGRES_PORT}
+    env_file:
+      - .env # use .env file to load environment variables.
+    volumes:
+      # location of persistent data store
+      - postgres:/var/lib/postgresql/data
+      # mount sql files to auto-execute when data base server is initialized
+      - ./migrations/sqls/init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  # adminer:
+  #   image: adminer
+  #   restart: always
+  #   ports:
+  #     - 8080:8080
