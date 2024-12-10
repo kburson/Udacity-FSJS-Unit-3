@@ -81,8 +81,8 @@ With the `.env` file in place you can start up the docker instance of the postgr
 
 next you will want to populate your databases with the proper tables and references:
 
-`npm run db.reset:dev`
-`npm run db.reset:test`
+- `npm run db.reset:dev`
+- `npm run db.reset:test`
 
 ## Project Management commands
 
