@@ -17,6 +17,7 @@ export async function createProduct(req: Request, res: Response) {
       newProduct.price,
       ' }'
     );
+    console.error(`new product must have "name" and "price"`, newProduct);
     res.status(400);
     res.json({ error: `new product must have "name" and "price"` });
     return;

@@ -6,6 +6,8 @@ import { isUndefined } from 'lodash';
 const SALT_ROUNDS = parseInt(process.env.SALT_ROUNDS) || 10;
 const CRYPTO_PEPPER = process.env.CRYPTO_PEPPER || 'Oh Bless My Soul!';
 const TOKEN_SECRET = process.env.TOKEN_SECRET || 'God Is Sovereign!';
+const TOKEN_EXPIRY_MINUTES = parseInt(process.env.TOKEN_EXPIRY_MINUTES) || 60;
+
 // const BCRYPT_PASSWORD = process.env.BCRYPT_PASSWORD || 'Yankee Doodle Dandy.'
 
 export function getJwtFromAuthHeader(authHeader: string): string {
@@ -26,7 +28,10 @@ export function getTokenPayload(token: string): JwtPayload {
 }
 
 export function generateToken(user: User): string {
-  const tokenOptions = { expiresIn: '12h', issuer: 'Udacity FSJS' };
+  const tokenOptions = {
+    expiresIn: 60 * 1000 * TOKEN_EXPIRY_MINUTES,
+    issuer: 'Udacity FSJS',
+  };
   const token = jwt.sign(user, TOKEN_SECRET, tokenOptions);
   //console.log("new auth token", token, "\ninput:", getTokenPayload(token));
   return token;

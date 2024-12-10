@@ -1,5 +1,7 @@
 # API Requirements
 
+[Back to Main README](../../../README.md)
+
 The company stakeholders want to create an online storefront to showcase their great product ideas.
 Users need to be able to
 
@@ -21,7 +23,7 @@ These are the notes from a meeting with the frontend developer that describe wha
 - [OPTIONAL] Top 5 most popular products
 - [OPTIONAL] Products by category (args: product category)
 
-| action    | verb   | url                          | bod/qs                  | headers                       |
+| action    | verb   | url                          | body/qs                 | headers                       |
 | --------- | ------ | ---------------------------- | ----------------------- | ----------------------------- |
 | Index     | `GET`  | /api/products                |                         |                               |
 | Show      | `GET`  | /api/products/:id            |                         |                               |

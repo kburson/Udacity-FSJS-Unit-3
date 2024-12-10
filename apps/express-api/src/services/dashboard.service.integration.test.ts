@@ -33,7 +33,7 @@ describe('Services: dashboard', () => {
     it('should return 10 users with 6 open orders and 10 fulfilled orders', async () => {
       // The test data has 10 users, only 5 have orders,
       // each has one open and one fulfilled order (total of 10 orders across all users)
-      const results = await dashBoard.usersWithOrders();
+      const results = await dashBoard.usersWithOrders(true);
 
       //console.log('usersWithOrders: results', results);
       expect(results.length).toEqual(testDataService.testData.orders.length);

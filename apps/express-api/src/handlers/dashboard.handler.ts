@@ -1,12 +1,19 @@
 import { Request, Response } from 'express';
-import { UserOrder, Dashboard } from '../services/dashboard.service';
+import {
+  UserOrder,
+  Dashboard,
+  FlatOrdersByUser,
+} from '../services/dashboard.service';
 import { isEmpty, isString } from 'lodash';
 
 const store = new Dashboard();
 
 export async function userOrders(_req: Request, res: Response) {
   try {
-    const list: UserOrder[] = await store.usersWithOrders();
+    const flat = _req.query.flat === 'true' || false;
+    const list: UserOrder[] | FlatOrdersByUser[] = await store.usersWithOrders(
+      flat
+    );
     //console.log('received these orders from handler', list);
     res.status(200);
     res.json(list);

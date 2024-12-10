@@ -7,1178 +7,640 @@
 	},
 	"item": [
 		{
-			"name": "exercises",
+			"name": "user accounts",
 			"item": [
 				{
-					"name": "articles",
-					"item": [
+					"name": "create user",
+					"event": [
 						{
-							"name": "/api/articles",
-							"request": {
-								"auth": {
-									"type": "bearer",
-									"bearer": [
-										{
-											"key": "token",
-											"value": "{{LOGGED_IN_USER_TOKEN}}",
-											"type": "string"
-										}
-									]
-								},
-								"method": "POST",
-								"header": [
-									{
-										"key": "Authorization",
-										"value": "Bearer {{LOGGED_IN_USER_TOKEN}}",
-										"type": "text",
-										"disabled": true
-									}
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
 								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"title\": \"How to raise Chickens\",\n    \"author\": \"Rich McManus\",\n    \"content\": \"Eggs, feathers and poop, oh my!\"\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{DOMAIN}}:{{PORT}}/api/articles",
-									"host": [
-										"{{DOMAIN}}"
-									],
-									"port": "{{PORT}}",
-									"path": [
-										"api",
-										"articles"
-									]
-								}
-							},
-							"response": []
+								"type": "text/javascript",
+								"packages": {}
+							}
 						},
 						{
-							"name": "/api/articles",
-							"protocolProfileBehavior": {
-								"disableBodyPruning": true
-							},
-							"request": {
-								"method": "GET",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{DOMAIN}}:{{PORT}}/api/articles",
-									"host": [
-										"{{DOMAIN}}"
-									],
-									"port": "{{PORT}}",
-									"path": [
-										"api",
-										"articles"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "/api/articles/:id",
-							"protocolProfileBehavior": {
-								"disableBodyPruning": true
-							},
-							"request": {
-								"method": "GET",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"title\": \"A New Test Manual\",\n    \"content\": \"All about testing your code\"\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{DOMAIN}}:{{PORT}}/api/articles/6",
-									"host": [
-										"{{DOMAIN}}"
-									],
-									"port": "{{PORT}}",
-									"path": [
-										"api",
-										"articles",
-										"6"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "/api/articles/:id",
-							"request": {
-								"auth": {
-									"type": "bearer",
-									"bearer": [
-										{
-											"key": "token",
-											"value": "{{LOGGED_IN_USER_TOKEN}}",
-											"type": "string"
-										}
-									]
-								},
-								"method": "PUT",
-								"header": [
-									{
-										"key": "Authorization",
-										"value": "Bearer {{LOGGED_IN_USER_TOKEN}}",
-										"type": "text",
-										"disabled": true
-									}
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Fetch the token header and save to environment variable",
+									"",
+									"let header = pm.response.headers.get('Authorization');",
+									"let token = header.split(' ')[1];",
+									"pm.environment.set(\"AUTH_TOKEN\", token);",
+									""
 								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"author\": \"Chad Burson\"\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{DOMAIN}}:{{PORT}}/api/articles/4",
-									"host": [
-										"{{DOMAIN}}"
-									],
-									"port": "{{PORT}}",
-									"path": [
-										"api",
-										"articles",
-										"4"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "/api/articles/:id",
-							"request": {
-								"auth": {
-									"type": "bearer",
-									"bearer": [
-										{
-											"key": "token",
-											"value": "{{LOGGED_IN_USER_TOKEN}}",
-											"type": "string"
-										}
-									]
-								},
-								"method": "DELETE",
-								"header": [
-									{
-										"key": "Authorization",
-										"value": "Bearer {{LOGGED_IN_USER_TOKEN}}",
-										"type": "text",
-										"disabled": true
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{DOMAIN}}:{{PORT}}/api/articles/4",
-									"host": [
-										"{{DOMAIN}}"
-									],
-									"port": "{{PORT}}",
-									"path": [
-										"api",
-										"articles",
-										"4"
-									]
-								}
-							},
-							"response": []
+								"type": "text/javascript",
+								"packages": {}
+							}
 						}
-					]
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"Jazzy\",\n    \"password\": \"{{DEFAULT_USER_PASSWORD}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{DOMAIN}}:{{PORT}}/api/users",
+							"host": [
+								"{{DOMAIN}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"api",
+								"users"
+							]
+						}
+					},
+					"response": []
 				},
 				{
-					"name": "books",
-					"item": [
+					"name": "login",
+					"event": [
 						{
-							"name": "/api/books",
-							"request": {
-								"auth": {
-									"type": "bearer",
-									"bearer": [
-										{
-											"key": "token",
-											"value": "{{LOGGED_IN_USER_TOKEN}}",
-											"type": "string"
-										}
-									]
-								},
-								"method": "POST",
-								"header": [
-									{
-										"key": "Authorization",
-										"value": "Bearer {{LOGGED_IN_USER_TOKEN}}",
-										"type": "text",
-										"disabled": true
-									}
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Fetch the token header and save to environment variable",
+									"",
+									"let header = pm.response.headers.get('Authorization');",
+									"let token = header.split(' ')[1];",
+									"pm.environment.set(\"AUTH_TOKEN\", token);"
 								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"title\":\"Book #11\",\n    \"author\":\"Kendrick Burson\",\n    \"total_pages\": 250,\n    \"type\": \"fiction\",\n    \"summary\": \"a children's book\"\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{DOMAIN}}:{{PORT}}/api/books",
-									"host": [
-										"{{DOMAIN}}"
-									],
-									"port": "{{PORT}}",
-									"path": [
-										"api",
-										"books"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "/api/books",
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{DOMAIN}}:{{PORT}}/api/books",
-									"host": [
-										"{{DOMAIN}}"
-									],
-									"port": "{{PORT}}",
-									"path": [
-										"api",
-										"books"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "/api/books/:id",
-							"protocolProfileBehavior": {
-								"disableBodyPruning": true
-							},
-							"request": {
-								"method": "GET",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{DOMAIN}}:{{PORT}}/api/books/2",
-									"host": [
-										"{{DOMAIN}}"
-									],
-									"port": "{{PORT}}",
-									"path": [
-										"api",
-										"books",
-										"2"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "/api/books/:id",
-							"request": {
-								"auth": {
-									"type": "bearer",
-									"bearer": [
-										{
-											"key": "token",
-											"value": "{{LOGGED_IN_USER_TOKEN}}",
-											"type": "string"
-										}
-									]
-								},
-								"method": "PUT",
-								"header": [
-									{
-										"key": "Authorization",
-										"value": "Bearer {{LOGGED_IN_USER_TOKEN}}",
-										"type": "text",
-										"disabled": true
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"id\": 3,\n    \"title\": \"Book #3\",\n    \"author\": \"Connie Burson\",\n    \"total_pages\": 800,\n    \"type\": \"History\",\n    \"summary\": \"a test children's book\"\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{DOMAIN}}:{{PORT}}/api/books/1",
-									"host": [
-										"{{DOMAIN}}"
-									],
-									"port": "{{PORT}}",
-									"path": [
-										"api",
-										"books",
-										"1"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "/api/books/:id",
-							"request": {
-								"auth": {
-									"type": "bearer",
-									"bearer": [
-										{
-											"key": "token",
-											"value": "{{LOGGED_IN_USER_TOKEN}}",
-											"type": "string"
-										}
-									]
-								},
-								"method": "DELETE",
-								"header": [
-									{
-										"key": "Authorization",
-										"value": "Bearer {{LOGGED_IN_USER_TOKEN}}",
-										"type": "text",
-										"disabled": true
-									}
-								],
-								"url": {
-									"raw": "{{DOMAIN}}:{{PORT}}/api/books/4",
-									"host": [
-										"{{DOMAIN}}"
-									],
-									"port": "{{PORT}}",
-									"path": [
-										"api",
-										"books",
-										"4"
-									]
-								}
-							},
-							"response": []
+								"type": "text/javascript",
+								"packages": {}
+							}
 						}
-					]
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"Jazzy\",\n    \"password\": \"{{DEFAULT_USER_PASSWORD}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{DOMAIN}}:{{PORT}}/api/users/login",
+							"host": [
+								"{{DOMAIN}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"api",
+								"users",
+								"login"
+							]
+						}
+					},
+					"response": []
 				},
 				{
-					"name": "weapons",
-					"item": [
-						{
-							"name": "/api/weapons",
-							"request": {
-								"auth": {
-									"type": "bearer",
-									"bearer": [
-										{
-											"key": "token",
-											"value": "{{LOGGED_IN_USER_TOKEN}}",
-											"type": "string"
-										}
-									]
-								},
-								"method": "POST",
-								"header": [
-									{
-										"key": "Authorization",
-										"value": "Bearer {{LOGGED_IN_USER_TOKEN}}",
-										"type": "text",
-										"disabled": true
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"title\": \"A New Test Manual\",\n    \"content\": \"All about testing your code\"\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{DOMAIN}}:{{PORT}}/api/weapons",
-									"host": [
-										"{{DOMAIN}}"
-									],
-									"port": "{{PORT}}",
-									"path": [
-										"api",
-										"weapons"
-									]
+					"name": "update user",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{AUTH_HEADER}}",
+									"type": "string"
 								}
-							},
-							"response": []
+							]
 						},
-						{
-							"name": "/api/weapons",
-							"protocolProfileBehavior": {
-								"disableBodyPruning": true
-							},
-							"request": {
-								"method": "GET",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{DOMAIN}}:{{PORT}}/api/weapons",
-									"host": [
-										"{{DOMAIN}}"
-									],
-									"port": "{{PORT}}",
-									"path": [
-										"api",
-										"weapons"
-									]
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{AUTH_HEADER}}",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"Jazzy\",\n    \"first_name\": \"Jazmine\",\n    \"last_name\": \"Burson\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
 								}
-							},
-							"response": []
+							}
 						},
-						{
-							"name": "/api/weapons/:id",
-							"protocolProfileBehavior": {
-								"disableBodyPruning": true
-							},
-							"request": {
-								"method": "GET",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{DOMAIN}}:{{PORT}}/api/weapons/1",
-									"host": [
-										"{{DOMAIN}}"
-									],
-									"port": "{{PORT}}",
-									"path": [
-										"api",
-										"weapons",
-										"1"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "/api/weapons/:id",
-							"request": {
-								"auth": {
-									"type": "bearer",
-									"bearer": [
-										{
-											"key": "token",
-											"value": "{{LOGGED_IN_USER_TOKEN}}",
-											"type": "string"
-										}
-									]
-								},
-								"method": "PUT",
-								"header": [
-									{
-										"key": "Authorization",
-										"value": "Bearer {{LOGGED_IN_USER_TOKEN}}",
-										"type": "text",
-										"disabled": true
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"name\": \"Mjolnir\",\n    \"type\": \"Hammer\",\n    \"weight\": 99999\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{DOMAIN}}:{{PORT}}/api/weapons/1",
-									"host": [
-										"{{DOMAIN}}"
-									],
-									"port": "{{PORT}}",
-									"path": [
-										"api",
-										"weapons",
-										"1"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "/api/weapons/:id",
-							"request": {
-								"auth": {
-									"type": "bearer",
-									"bearer": [
-										{
-											"key": "token",
-											"value": "{{LOGGED_IN_USER_TOKEN}}",
-											"type": "string"
-										}
-									]
-								},
-								"method": "DELETE",
-								"header": [
-									{
-										"key": "Authorization",
-										"value": "Bearer {{LOGGED_IN_USER_TOKEN}}",
-										"type": "text",
-										"disabled": true
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{DOMAIN}}:{{PORT}}/api/weapons/1",
-									"host": [
-										"{{DOMAIN}}"
-									],
-									"port": "{{PORT}}",
-									"path": [
-										"api",
-										"weapons",
-										"1"
-									]
-								}
-							},
-							"response": []
+						"url": {
+							"raw": "{{DOMAIN}}:{{PORT}}/api/users",
+							"host": [
+								"{{DOMAIN}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"api",
+								"users"
+							]
 						}
-					]
+					},
+					"response": []
+				},
+				{
+					"name": "list users",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{DOMAIN}}:{{PORT}}/api/users",
+							"host": [
+								"{{DOMAIN}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"api",
+								"users"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
 		{
-			"name": "final_project",
+			"name": "orders",
 			"item": [
 				{
-					"name": "user accounts",
-					"item": [
-						{
-							"name": "/api/users",
-							"request": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"username\": \"Rich!\",\n    \"first_name\": \"Richard\",\n    \"last_name\": \"McManus\",\n    \"password\": \"{{DEFAULT_USERPASSWORD}}\"\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{DOMAIN}}:{{PORT}}/api/users",
-									"host": [
-										"{{DOMAIN}}"
-									],
-									"port": "{{PORT}}",
-									"path": [
-										"api",
-										"users"
-									]
+					"name": "get orders by status",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{AUTH_TOKEN}}",
+									"type": "string"
 								}
-							},
-							"response": []
+							]
 						},
-						{
-							"name": "/api/users/login",
-							"request": {
-								"auth": {
-									"type": "bearer",
-									"bearer": [
-										{
-											"key": "token",
-											"value": "{{LOGGED_IN_USER_TOKEN}}",
-											"type": "string"
-										}
-									]
-								},
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"username\": \"Rich!\",\n    \"password\": \"{{DEFAULT_USER_PASSWORD}}\"\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{DOMAIN}}:{{PORT}}/api/users/login",
-									"host": [
-										"{{DOMAIN}}"
-									],
-									"port": "{{PORT}}",
-									"path": [
-										"api",
-										"users",
-										"login"
-									]
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
 								}
-							},
-							"response": []
+							}
 						},
-						{
-							"name": "/api/users",
-							"request": {
-								"auth": {
-									"type": "bearer",
-									"bearer": [
-										{
-											"key": "token",
-											"value": "{{LOGGED_IN_USER_TOKEN}}",
-											"type": "string"
-										}
-									]
-								},
-								"method": "PUT",
-								"header": [
-									{
-										"key": "Authorization",
-										"value": "Bearer {{LOGGED_IN_USER_TOKEN}}",
-										"type": "text",
-										"disabled": true
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"username\": \"Jazzy\",\n    \"first_name\": \"Jazmine\",\n    \"last_name\": \"Burson\"\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{DOMAIN}}:{{PORT}}/api/users",
-									"host": [
-										"{{DOMAIN}}"
-									],
-									"port": "{{PORT}}",
-									"path": [
-										"api",
-										"users"
-									]
+						"url": {
+							"raw": "{{DOMAIN}}:{{PORT}}/api/orders?status=open",
+							"host": [
+								"{{DOMAIN}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"api",
+								"orders"
+							],
+							"query": [
+								{
+									"key": "status",
+									"value": "open"
 								}
-							},
-							"response": []
+							]
 						}
-					]
+					},
+					"response": []
 				},
 				{
-					"name": "products",
-					"item": [
-						{
-							"name": "/api/products",
-							"request": {
-								"auth": {
-									"type": "bearer",
-									"bearer": [
-										{
-											"key": "token",
-											"value": "{{LOGGED_IN_USER_TOKEN}}",
-											"type": "string"
-										}
-									]
-								},
-								"method": "POST",
-								"header": [
-									{
-										"key": "Authorization",
-										"value": "Bearer {{LOGGED_IN_USER_TOKEN}}",
-										"type": "text",
-										"disabled": true
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"name\": \"Table Saw\",\n    \"price\": 30000\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{DOMAIN}}:{{PORT}}/api/products",
-									"host": [
-										"{{DOMAIN}}"
-									],
-									"port": "{{PORT}}",
-									"path": [
-										"api",
-										"products"
-									]
+					"name": "create order",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{AUTH_TOKEN}}",
+									"type": "string"
 								}
-							},
-							"response": []
+							]
 						},
-						{
-							"name": "/api/products",
-							"protocolProfileBehavior": {
-								"disableBodyPruning": true
-							},
-							"request": {
-								"auth": {
-									"type": "bearer",
-									"bearer": [
-										{
-											"key": "token",
-											"value": "{{LOGGED_IN_USER_TOKEN}}",
-											"type": "string"
-										}
-									]
-								},
-								"method": "GET",
-								"header": [
-									{
-										"key": "Authorization",
-										"value": "Bearer {{LOGGED_IN_USER_TOKEN}}",
-										"type": "text",
-										"disabled": true
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{DOMAIN}}:{{PORT}}/api/products",
-									"host": [
-										"{{DOMAIN}}"
-									],
-									"port": "{{PORT}}",
-									"path": [
-										"api",
-										"products"
-									]
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
 								}
-							},
-							"response": []
+							}
 						},
-						{
-							"name": "/api/products/:id",
-							"protocolProfileBehavior": {
-								"disableBodyPruning": true
-							},
-							"request": {
-								"auth": {
-									"type": "bearer",
-									"bearer": [
-										{
-											"key": "token",
-											"value": "{{LOGGED_IN_USER_TOKEN}}",
-											"type": "string"
-										}
-									]
-								},
-								"method": "GET",
-								"header": [
-									{
-										"key": "Authorization",
-										"value": "Bearer {{LOGGED_IN_USER_TOKEN}}",
-										"type": "text",
-										"disabled": true
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{DOMAIN}}:{{PORT}}/api/products/1",
-									"host": [
-										"{{DOMAIN}}"
-									],
-									"port": "{{PORT}}",
-									"path": [
-										"api",
-										"products",
-										"1"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "/api/products?name={name}",
-							"protocolProfileBehavior": {
-								"disableBodyPruning": true
-							},
-							"request": {
-								"auth": {
-									"type": "bearer",
-									"bearer": [
-										{
-											"key": "token",
-											"value": "{{LOGGED_IN_USER_TOKEN}}",
-											"type": "string"
-										}
-									]
-								},
-								"method": "GET",
-								"header": [
-									{
-										"key": "Authorization",
-										"value": "Bearer {{LOGGED_IN_USER_TOKEN}}",
-										"type": "text",
-										"disabled": true
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{DOMAIN}}:{{PORT}}/api/products?name=Saw",
-									"host": [
-										"{{DOMAIN}}"
-									],
-									"port": "{{PORT}}",
-									"path": [
-										"api",
-										"products"
-									],
-									"query": [
-										{
-											"key": "name",
-											"value": "Table",
-											"disabled": true
-										},
-										{
-											"key": "id",
-											"value": "2",
-											"disabled": true
-										},
-										{
-											"key": "price",
-											"value": "35000",
-											"disabled": true
-										},
-										{
-											"key": "name",
-											"value": "Saw"
-										}
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "/api/products/filter/popular",
-							"protocolProfileBehavior": {
-								"disableBodyPruning": true
-							},
-							"request": {
-								"auth": {
-									"type": "bearer",
-									"bearer": [
-										{
-											"key": "token",
-											"value": "{{LOGGED_IN_USER_TOKEN}}",
-											"type": "string"
-										}
-									]
-								},
-								"method": "GET",
-								"header": [
-									{
-										"key": "Authorization",
-										"value": "Bearer {{LOGGED_IN_USER_TOKEN}}",
-										"type": "text",
-										"disabled": true
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{DOMAIN}}:{{PORT}}/api/products/filter/popular?limit=3&category=Tools",
-									"host": [
-										"{{DOMAIN}}"
-									],
-									"port": "{{PORT}}",
-									"path": [
-										"api",
-										"products",
-										"filter",
-										"popular"
-									],
-									"query": [
-										{
-											"key": "limit",
-											"value": "3"
-										},
-										{
-											"key": "category",
-											"value": "Tools"
-										}
-									]
-								}
-							},
-							"response": []
+						"url": {
+							"raw": "{{DOMAIN}}:{{PORT}}/api/orders",
+							"host": [
+								"{{DOMAIN}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"api",
+								"orders"
+							]
 						}
-					]
+					},
+					"response": []
 				},
 				{
-					"name": "orders",
-					"item": [
-						{
-							"name": "/api/orders?status={...}",
-							"protocolProfileBehavior": {
-								"disableBodyPruning": true
-							},
-							"request": {
-								"auth": {
-									"type": "bearer",
-									"bearer": [
-										{
-											"key": "token",
-											"value": "{{LOGGED_IN_USER_TOKEN}}",
-											"type": "string"
-										}
-									]
-								},
-								"method": "GET",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{DOMAIN}}:{{PORT}}/api/orders?status=open",
-									"host": [
-										"{{DOMAIN}}"
-									],
-									"port": "{{PORT}}",
-									"path": [
-										"api",
-										"orders"
-									],
-									"query": [
-										{
-											"key": "status",
-											"value": "open"
-										}
-									]
+					"name": "add product to order",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{AUTH_TOKEN}}",
+									"type": "string"
 								}
-							},
-							"response": []
+							]
 						},
-						{
-							"name": "/api/orders",
-							"request": {
-								"auth": {
-									"type": "bearer",
-									"bearer": [
-										{
-											"key": "token",
-											"value": "{{LOGGED_IN_USER_TOKEN}}",
-											"type": "string"
-										}
-									]
-								},
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{DOMAIN}}:{{PORT}}/api/orders",
-									"host": [
-										"{{DOMAIN}}"
-									],
-									"port": "{{PORT}}",
-									"path": [
-										"api",
-										"orders"
-									]
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{AUTH_HEADER}}",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"product_id\": 3,\n    \"quantity\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
 								}
-							},
-							"response": []
+							}
 						},
-						{
-							"name": "/api/orders/product",
-							"request": {
-								"auth": {
-									"type": "bearer",
-									"bearer": [
-										{
-											"key": "token",
-											"value": "{{LOGGED_IN_USER_TOKEN}}",
-											"type": "string"
-										}
-									]
-								},
-								"method": "POST",
-								"header": [
-									{
-										"key": "Authorization",
-										"value": "Bearer {{LOGGED_IN_USER_TOKEN}}",
-										"type": "text",
-										"disabled": true
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"product_id\": 3,\n    \"quantity\": 1\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{DOMAIN}}:{{PORT}}/api/orders/product",
-									"host": [
-										"{{DOMAIN}}"
-									],
-									"port": "{{PORT}}",
-									"path": [
-										"api",
-										"orders",
-										"product"
-									]
-								}
-							},
-							"response": []
+						"url": {
+							"raw": "{{DOMAIN}}:{{PORT}}/api/orders/product",
+							"host": [
+								"{{DOMAIN}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"api",
+								"orders",
+								"product"
+							]
 						}
-					]
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "products",
+			"item": [
+				{
+					"name": "create product",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{AUTH_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{AUTH_HEADER}}",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"compost\",\n    \"price\": 1195,\n    \"category\": \"garden\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{DOMAIN}}:{{PORT}}/api/products",
+							"host": [
+								"{{DOMAIN}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"api",
+								"products"
+							]
+						}
+					},
+					"response": []
 				},
 				{
-					"name": "dashboard",
-					"item": [
-						{
-							"name": "userOrders",
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{DOMAIN}}:{{PORT}}/api/userOrders",
-									"host": [
-										"{{DOMAIN}}"
-									],
-									"port": "{{PORT}}",
-									"path": [
-										"api",
-										"userOrders"
-									]
-								}
-							},
-							"response": []
+					"name": "list products",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
 						},
-						{
-							"name": "productOrders",
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{DOMAIN}}:{{PORT}}/api/userOrders",
-									"host": [
-										"{{DOMAIN}}"
-									],
-									"port": "{{PORT}}",
-									"path": [
-										"api",
-										"userOrders"
-									]
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
 								}
-							},
-							"response": []
+							}
+						},
+						"url": {
+							"raw": "{{DOMAIN}}:{{PORT}}/api/products",
+							"host": [
+								"{{DOMAIN}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"api",
+								"products"
+							]
 						}
-					]
+					},
+					"response": []
+				},
+				{
+					"name": "get product by id",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{LOGGED_IN_USER_TOKEN}}",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{DOMAIN}}:{{PORT}}/api/products/1",
+							"host": [
+								"{{DOMAIN}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"api",
+								"products",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get product by name",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{LOGGED_IN_USER_TOKEN}}",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{DOMAIN}}:{{PORT}}/api/products?name=door%20knob",
+							"host": [
+								"{{DOMAIN}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"api",
+								"products"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "Table",
+									"disabled": true
+								},
+								{
+									"key": "price",
+									"value": "35000",
+									"disabled": true
+								},
+								{
+									"key": "name",
+									"value": "door%20knob"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "filter popular products",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{LOGGED_IN_USER_TOKEN}}",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{DOMAIN}}:{{PORT}}/api/products/filter/popular?limit=3&category=Tools",
+							"host": [
+								"{{DOMAIN}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"api",
+								"products",
+								"filter",
+								"popular"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "3"
+								},
+								{
+									"key": "category",
+									"value": "Tools"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "dashboard",
+			"item": [
+				{
+					"name": "get all users with orders",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{DOMAIN}}:{{PORT}}/api/userOrders?flat=true",
+							"host": [
+								"{{DOMAIN}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"api",
+								"userOrders"
+							],
+							"query": [
+								{
+									"key": "flat",
+									"value": "true"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get users with nested orders",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{DOMAIN}}:{{PORT}}/api/userOrders",
+							"host": [
+								"{{DOMAIN}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"api",
+								"userOrders"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "filter products ordered",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{DOMAIN}}:{{PORT}}/api/productOrders?sort_col=price&sort_dir=desc&limit=5",
+							"host": [
+								"{{DOMAIN}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"api",
+								"productOrders"
+							],
+							"query": [
+								{
+									"key": "sort_col",
+									"value": "price"
+								},
+								{
+									"key": "sort_dir",
+									"value": "desc"
+								},
+								{
+									"key": "limit",
+									"value": "5"
+								}
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		}

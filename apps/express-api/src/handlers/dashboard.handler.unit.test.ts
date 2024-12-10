@@ -1,5 +1,9 @@
 import * as dashboardHandlers from './dashboard.handler';
-import { UserOrder, Dashboard } from '../services/dashboard.service';
+import {
+  UserOrder,
+  Dashboard,
+  FlatOrdersByUser,
+} from '../services/dashboard.service';
 import httpMocks from 'node-mocks-http';
 
 describe('API Handler: dashboard', () => {
@@ -17,27 +21,24 @@ describe('API Handler: dashboard', () => {
     });
 
     it('should return list of all user orders, along with user identity', async () => {
-      const userOrders: UserOrder[] = [
+      const userOrders: UserOrder[] | FlatOrdersByUser[] = [
         {
           user_id: 1,
           order_id: 1,
           username: 'test1',
-          first_name: 'test',
-          last_name: 'test',
+          status: 'open',
         },
         {
           user_id: 2,
           order_id: 2,
           username: 'test2',
-          first_name: 'test',
-          last_name: 'test',
+          status: 'open',
         },
         {
           user_id: 3,
           order_id: 3,
           username: 'test3',
-          first_name: 'test',
-          last_name: 'test',
+          status: 'open',
         },
       ];
       jest
@@ -50,6 +51,8 @@ describe('API Handler: dashboard', () => {
       const data = mockedResponse._getJSONData();
       expect(data).toEqual(userOrders);
     });
+
+    // TODO: Add another test case for nested results.
   });
 
   describe('productOrders', () => {

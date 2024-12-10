@@ -30,6 +30,7 @@ export async function createUser(req: Request, res: Response) {
     isEmpty(user.password) ||
     isNull(user.password)
   ) {
+    console.error('new user must have both username and password', user);
     res.status(400);
     res.json({ error: 'new user must have both username and password' });
     return;
@@ -46,6 +47,7 @@ export async function createUser(req: Request, res: Response) {
     res.status(200);
     res.json(sanitizedUser);
   } catch (err) {
+    console.log('failed to create user\n', err);
     res.status(400);
     res.json(err);
   }

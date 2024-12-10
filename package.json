@@ -17,7 +17,8 @@
     "predb.reset:test": "db-migrate reset -e test",
     "db.reset:test": "db-migrate up -e test",
     "db.up:test": "db-migrate up --env test",
-    "db.down:test": "db-migrate down --env test"
+    "db.down:test": "db-migrate down --env test",
+    "generate-test-data": "node dist/apps/express-api/apps/express-api/src/_test-helpers/_testData.js"
   },
   "private": true,
   "dependencies": {

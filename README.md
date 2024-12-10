@@ -27,6 +27,8 @@ You can also execute these commands directly from the command line at the root l
 
 you will need to either have a POSTGRES db running locally (not recommended) or Docker Desktop running to host the docker-compose environment.
 
+The functional requirements are described in the [docs/.../REQUIREMENTS.md](docs/unit-3-API/chapter-7/REQUIREMENTS.md)
+
 ## setup
 
 run `npm i` from the root of the project to download all the packaged dependencies.
@@ -58,6 +60,9 @@ POSTGRES_PORT=5432
 
 # These should be passed to service using Kubernetes secrets or some other secure config
 POSTGRES_PASSWORD=password123
+
+# This modifies how long auth token is valid before it expires
+TOKEN_EXPIRY_MINUTES=10
 
 # the following are used for password cryptography
 SALT_ROUNDS=10
@@ -103,6 +108,23 @@ Because several api endpoints are authenticated and require a valid Authorizatio
 
 > you can add the "first_name" and "last_name" properties if you like, but they are not required.
 
-The response will include the Authorization Token (JWT) in the response headers. Copy this header (without the `Bearer ` preface) and paste this into the postman environment variable `LOGGED_IN_USER_TOKEN`.
+The response will include the Authorization Token (JWT) in the response headers. the post-response scripts will automatically capture this header value and store it in a postman environment variable.
+
+You can use the `login` api to refresh the token at any time. I am setting the expiry of the token to 10 minutes, which is sufficient time for testing
 
 after that all the api endpoints should work for you.
+
+## Generate test data set for manual inspection
+
+You may want to quickly generate a test data set to view with the various API requests in the postman collection. There is a script setup for this.
+
+`npm run generate-test-data`
+
+This will generate a set of test data that is used during unit testing. It include 10 products, 10 users, 16 orders (both open and fulfilled) and 29 order items spread across the 16 orders.
+
+You can reset the dataset at any time with:
+
+1. `npm run db.reset:dev`
+2. `npm run generate-test-data`
+
+> This is only for the dev database - which is the only db you should use when exercising the API endpoints in postman. The test db is used for unit tests and will auto-hydrate and reset as needed by the tests.

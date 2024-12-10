@@ -16,5 +16,9 @@
     "baseUrl": ".",
     "paths": {}
   },
+  "ts-node": {
+    "esm": true,
+    "experimentalSpecifierResolution": "node"
+  },
   "exclude": ["node_modules", "tmp"]
 }
