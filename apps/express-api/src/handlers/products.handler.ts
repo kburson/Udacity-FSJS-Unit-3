@@ -15,7 +15,7 @@ export async function createProduct(req: Request, res: Response) {
       newProduct.name,
       ', price:',
       newProduct.price,
-      ' }',
+      ' }'
     );
     res.status(400);
     res.json({ error: `new product must have "name" and "price"` });
@@ -61,7 +61,7 @@ export async function getProduct(req: Request, res: Response) {
   console.log('getProduct');
 
   try {
-    const id = parseInt(req.params.id);
+    const id = parseInt(req.query.id as string);
     const product: Product = await store.getProduct(id);
     res.status(200);
     res.json(product);
@@ -110,7 +110,7 @@ export async function lookupProducts(req: Request, res: Response) {
       isNull(product.category)
     ) {
       throw new Error(
-        'must have id, name,price or category to search products',
+        'must have id, name,price or category to search products'
       );
     }
 

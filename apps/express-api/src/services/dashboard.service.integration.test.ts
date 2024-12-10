@@ -64,7 +64,7 @@ describe('Services: dashboard', () => {
 
       const results = await dashBoard.productOrders(sortCol, sortOrder, limit);
 
-      console.log(results);
+      //console.log(results);
       expect(results.length).toBe(3);
 
       /*

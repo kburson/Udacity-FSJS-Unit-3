@@ -254,10 +254,10 @@ describe('API Handler: products', () => {
       mockedRequest.query.id = (product.id as number).toString();
       mockedResponse.json = jest.fn();
 
-      await productHandlers.listProducts(mockedRequest, mockedResponse);
+      await productHandlers.getProduct(mockedRequest, mockedResponse);
 
       expect(mockedResponse.statusCode).toBe(200);
-      expect(mockedResponse.json).toHaveBeenCalledWith([product]);
+      expect(mockedResponse.json).toHaveBeenCalledWith(product);
     });
   });
 

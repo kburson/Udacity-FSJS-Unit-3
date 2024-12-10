@@ -96,12 +96,6 @@ describe('Model: UserStore', () => {
     });
   });
 
-  describe.skip('updateUser', () => {
-    it('should TBD', () => {
-      expect(true).toBeTruthy();
-    });
-  });
-
   describe('authenticate', () => {
     it('should return account with matching username/password', async () => {
       const user = data.testData.users[0];

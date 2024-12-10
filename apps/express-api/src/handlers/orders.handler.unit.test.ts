@@ -25,8 +25,35 @@ describe('API Handler: orders', () => {
       jest.restoreAllMocks();
     });
 
-    it('should TBD', () => {
-      expect(true).toBeTruthy();
+    it('should return the array of orders found by OrderStore', async () => {
+      // bypass the authentication middleware
+      jest
+        .spyOn(securityTools, 'getJwtFromAuthHeader')
+        .mockImplementationOnce(() => 'abc');
+      jest
+        .spyOn(securityTools, 'getTokenPayload')
+        .mockImplementationOnce(() => {
+          return { id: 1 }; // all we need is the user id
+        });
+
+      const openOrder: Order = {
+        id: 15,
+        user_id: 1,
+        status: OrderStatus.open,
+        items: [],
+      };
+
+      jest
+        .spyOn(OrderStore.prototype, 'filterOrders')
+        .mockImplementationOnce(() => Promise.resolve([openOrder]));
+
+      mockedRequest.query.status = OrderStatus.open;
+
+      await ordersHandlers.filterOrdersByStatus(mockedRequest, mockedResponse);
+      const orders = mockedResponse._getJSONData();
+
+      expect(orders).toHaveLength(1);
+      expect(orders[0].id).toEqual(openOrder.id);
     });
   });
 

@@ -1,5 +1,5 @@
 import { pool } from '../database';
-import { isUndefined, isEmpty, map, find } from 'lodash';
+import { isUndefined, isEmpty, find } from 'lodash';
 
 export enum OrderStatus {
   open = 'open',
@@ -68,7 +68,7 @@ export class OrderStore {
     const conn = await pool.connect();
     // try {
     const sql =
-      `SELECT product_id, name, quantity, price ` +
+      `SELECT order_id, product_id, quantity, name, price ` +
       `FROM orders_products ` +
       `INNER JOIN products ON products.id = orders_products.product_id ` +
       `WHERE order_id=($1);`;
@@ -92,14 +92,11 @@ export class OrderStore {
       !isEmpty(status) ? ' AND status=($2)' : ''
     };`;
 
-    // create or re-use db client for queries in this method
-    // const conn = await pool.connect();
-    // try {
-    const results = await pool.query(sql, [user_id, status]);
+    const values = isEmpty(status) ? [user_id] : [user_id, status];
+
+    const results = await pool.query(sql, values);
+
     return results.rows;
-    // } finally {
-    //   conn.release();
-    // }
   }
 
   getProductQtyFromOrder(order: Order, product_id: number): number {
@@ -112,23 +109,26 @@ export class OrderStore {
     qty: number,
     order: Order
   ): Promise<Order> {
-    // create or re-use db client for queries in this method
-    // const conn = await pool.connect();
+    // first make sure the order is still open.
+    const dbOrder = await pool.query(
+      `SELECT status FROM orders WHERE id=($1);`,
+      [order.id]
+    );
+    if (dbOrder.rows[0].status !== OrderStatus.open) {
+      console.error(
+        'cannot update product quantity on a closed or cancelled order'
+      );
+      throw new Error('invalid order id. Must be an open order');
+    }
 
-    // We need to update the record, not add a new one.
-    // try {
     let sql = `UPDATE orders_products SET quantity=($3) WHERE order_id=($1) AND product_id=($2);`;
     await pool.query(sql, [order.id, product_id, qty]);
 
-    // now re-fetch all order items for this order
     sql = `SELECT * FROM orders_products WHERE order_id=($1);`;
     const response = await pool.query(sql, [order.id]);
     order.items = response.rows;
 
     return order;
-    // } finally {
-    //   conn.release();
-    // }
   }
 
   async addProductToActiveOrder(
@@ -136,9 +136,6 @@ export class OrderStore {
     qty: number,
     user_id: number
   ): Promise<Order> {
-    // create or re-use db client for queries in this method
-    // const conn = await pool.connect();
-
     // first find or create active order for user.
     const order: Order = await this.getOpenOrder(user_id);
 
@@ -146,7 +143,9 @@ export class OrderStore {
       order.items = [];
     }
 
-    //console.log(`adding ${qty} of product ${product_id} into order`, order);
+    if (qty <= 0) {
+      return order; // cannot add negative qty, try using updateOrderProductQty instead.
+    }
 
     // now check if we already have some of this in our order...
     const quantity = this.getProductQtyFromOrder(order, product_id);
@@ -184,9 +183,30 @@ export class OrderStore {
       await pool.query(sql, [order_id]);
     } catch {
       return false;
-      // } finally {
-      //   conn.release();
     }
     return true;
+  }
+
+  async deleteOrderItem(
+    order_id: number,
+    product_id: number
+  ): Promise<boolean> {
+    try {
+      // check if the order is open.
+      const orders = await pool.query(
+        `SELECT * FROM orders WHERE id=($1) AND status=($2);`,
+        [order_id, OrderStatus.open]
+      );
+      if (orders.rowCount <= 0) {
+        return false; // Cannot delete from a closed or fulfilled order.
+      }
+      const results = await pool.query(
+        `DELETE FROM orders_products WHERE order_id=($1) AND product_id=($2) RETURNING *;`,
+        [order_id, product_id]
+      );
+      return results.rowCount === 1;
+    } catch (err) {
+      console.error(err);
+    }
   }
 }

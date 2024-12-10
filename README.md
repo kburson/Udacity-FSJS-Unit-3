@@ -1,101 +1,108 @@
-# NodeExpress
+# Udacity Full Stack JS
 
-<a alt="Nx logo" href="https://nx.dev" target="_blank" rel="noreferrer"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png" width="45"></a>
+This is the course project for Udacity Full Stack JS
 
-✨ Your new, shiny [Nx workspace](https://nx.dev) is ready ✨.
+## TL;DR
 
-[Learn more about this workspace setup and its capabilities](https://nx.dev/nx-api/node?utm_source=nx_project&amp;utm_medium=readme&amp;utm_campaign=nx_projects) or run `npx nx graph` to visually explore what was created. Now, let's get you up to speed!
+1. install docker desktop
+1. create `.env` file with appropriate settings (sample file show below)
+1. import postman collection and environment into your postman instance
+1. `npm i`
+1. `docker compose up`
+1. `npm run db.reset:test`
+1. `npm run db.reset:dev`
+1. `npx nx run express-api:lint`
+1. `npx nx run express-api:test --codeCoverage=true`
+1. `npx nx run express-api:serve:development `
+1. excerise api endpoints using postman or curl
 
-## Run tasks
+## Nx Dev Tools
 
-To run the dev server for your app, use:
+I am using the Nx Dev tools to generate a mono-repo that is intended to contain both front end and backend applications in various forms ( express, fastify, spring-boot, golang ) + ( angular, vue )
 
-```sh
-npx nx serve express-api
-```
+The simplest way to interact with the Nx Dev Tools is to use the VSCode Nx Console, a plugin/extension that provides easy access to the various command line methods used to manage the project.
+You can also execute these commands directly from the command line at the root level of the project. I will provide a list of sample commands you can use when evaluating this project.
 
-To create a production bundle:
+## requirements
 
-```sh
-npx nx build express-api
-```
+you will need to either have a POSTGRES db running locally (not recommended) or Docker Desktop running to host the docker-compose environment.
 
-To see all available targets to run for a project, run:
+## setup
 
-```sh
-npx nx show project express-api
-```
+run `npm i` from the root of the project to download all the packaged dependencies.
 
-These targets are either [inferred automatically](https://nx.dev/concepts/inferred-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) or defined in the `project.json` or `package.json` files.
+## Project config
 
-[More about running tasks in the docs &raquo;](https://nx.dev/features/run-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+Next you will need a `.env` file to define the database connection parameters and specific secrets required by the authentication and cryptography modules. This `.env` file is listed in the `.gitignore` so it will never be included in the repository database. Here are the settings that I am using. You can modify these to your preferences. Notice that there are 2 database names listed: The `POSTGRES_TEST_DB` is used during unit testing and will be repeatedly torn down and rehydrated during the testing process. For manual testing use the `POSTGRESS_DB` instead.
 
-## Add new projects
-
-While you could add new projects to your workspace manually, you might want to leverage [Nx plugins](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) and their [code generation](https://nx.dev/features/generate-code?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) feature.
-
-Use the plugin's generator to create new projects.
-
-To generate a new application, use:
-
-```sh
-npx nx g @nx/node:app demo
-```
-
-To generate a new library, use:
+**`.env`**
 
 ```sh
-npx nx g @nx/node:lib mylib
+
+# when using docker compose this will name the application stack
+COMPOSE_PROJECT_NAME=udacity-fsjs
+DB_CONTAINER_NAME=udacity_db_server
+
+# default runtime environment
+POSTGRES_DEFAULT_ENV=dev
+
+# dev environment settings
+POSTGRES_DB=shopping
+# test environment settings
+POSTGRES_TEST_DB=shopping_test
+
+# Database connection
+POSTGRES_HOST=127.0.0.1
+POSTGRES_USER=shopping_user
+POSTGRES_PORT=5432
+
+# These should be passed to service using Kubernetes secrets or some other secure config
+POSTGRES_PASSWORD=password123
+
+# the following are used for password cryptography
+SALT_ROUNDS=10
+CRYPTO_PEPPER=YankeeDoodle
+TOKEN_SECRET=GodIsSovereign!
+
 ```
 
-You can use `npx nx list` to get a list of installed plugins. Then, run `npx nx list <plugin-name>` to learn about more specific capabilities of a particular plugin. Alternatively, [install Nx Console](https://nx.dev/getting-started/editor-setup?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) to browse plugins and generators in your IDE.
+## DBMS Service -- Docker
 
-[Learn more about Nx plugins &raquo;](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) | [Browse the plugin registry &raquo;](https://nx.dev/plugin-registry?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+With the `.env` file in place you can start up the docker instance of the postgres RDMS service.
 
-## Set up CI!
+`docker compose up`
 
-### Step 1
+## DBMS Table Generation
 
-To connect to Nx Cloud, run the following command:
+next you will want to populate your databases with the proper tables and references:
 
-```sh
-npx nx connect
-```
+`npm run db.reset:dev`
+`npm run db.reset:test`
 
-Connecting to Nx Cloud ensures a [fast and scalable CI](https://nx.dev/ci/intro/why-nx-cloud?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) pipeline. It includes features such as:
+## Project Management commands
 
-- [Remote caching](https://nx.dev/ci/features/remote-cache?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Task distribution across multiple machines](https://nx.dev/ci/features/distribute-task-execution?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Automated e2e test splitting](https://nx.dev/ci/features/split-e2e-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Task flakiness detection and rerunning](https://nx.dev/ci/features/flaky-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+next you will want to work with the api server code
 
-### Step 2
+| nx Command                                      | description                              |
+| ----------------------------------------------- | ---------------------------------------- |
+| npx nx run express-api:lint                     | lint all code under `apps/express-api`   |
+| npx nx run express-api:test                     | run unit tests for express-api           |
+| npx nx run express-api:test --codeCoverage=true | run unit test with coverage analysis     |
+| npx nx run express-api:serve:development        | start the api server in development mode |
 
-Use the following command to configure a CI workflow for your workspace:
+If you run the unit tests with coverage enabled you can find the coverage reports at the root level of the project `./coverage/apps/express-api`
 
-```sh
-npx nx g ci-workflow
-```
+## Postman Collection
 
-[Learn more about Nx on CI](https://nx.dev/ci/intro/ci-with-nx#ready-get-started-with-your-provider?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+Once you have the service running ( `nx run express-api:serve:development` )
+you can finally exercise the service using the included postman collection.
 
-## Install Nx Console
+> You will need to import both the postman collection and the environment (2 separate files located in the `./postman` directory);
 
-Nx Console is an editor extension that enriches your developer experience. It lets you run tasks, generate code, and improves code autocompletion in your IDE. It is available for VSCode and IntelliJ.
+Because several api endpoints are authenticated and require a valid Authorization header you will need to first use `POST /api/users` with a JSON body that includes **at the minimum** { "username": "myName", "password":"secret" }
 
-[Install Nx Console &raquo;](https://nx.dev/getting-started/editor-setup?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+> you can add the "first_name" and "last_name" properties if you like, but they are not required.
 
-## Useful links
+The response will include the Authorization Token (JWT) in the response headers. Copy this header (without the `Bearer ` preface) and paste this into the postman environment variable `LOGGED_IN_USER_TOKEN`.
 
-Learn more:
-
-- [Learn more about this workspace setup](https://nx.dev/nx-api/node?utm_source=nx_project&amp;utm_medium=readme&amp;utm_campaign=nx_projects)
-- [Learn about Nx on CI](https://nx.dev/ci/intro/ci-with-nx?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Releasing Packages with Nx release](https://nx.dev/features/manage-releases?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [What are Nx plugins?](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-And join the Nx community:
-- [Discord](https://go.nx.dev/community)
-- [Follow us on X](https://twitter.com/nxdevtools) or [LinkedIn](https://www.linkedin.com/company/nrwl)
-- [Our Youtube channel](https://www.youtube.com/@nxdevtools)
-- [Our blog](https://nx.dev/blog?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+after that all the api endpoints should work for you.
